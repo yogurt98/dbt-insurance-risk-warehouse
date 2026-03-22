@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: raw
+    database: INSURANCE_DB
+    schema: RAW
+    tables:
+      - name: customers
+        description: "合成客户表，Faker 生成，约 10,000 条"
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+      - name: policies
+        description: "合成保单表，约 40,000 条"
+        columns:
+          - name: policy_id
+            tests:
+              - not_null
+              - unique
+          - name: customer_id
+            tests:
+              - relationships:
+                  arguments: 
+                    to: source('raw', 'customers')
+                    field: customer_id
+      - name: claims
+        description: "合成理赔表，约 40,000 条"
+        columns:
+          - name: claim_id
+            tests:
+              - not_null
+              - unique
+          - name: policy_id
+            tests:
+              - relationships:
+                  arguments: 
+                    to: source('raw', 'policies')
+                    field: policy_id
+      - name: risk_factors
+        description: "合成风险因子表，约 10,000 条"
+        columns:
+          - name: risk_factor_id
+            tests:
+              - not_null
+              - unique
+          - name: customer_id
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('raw', 'customers')
+                    field: customer_id
