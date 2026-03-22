@@ -17,12 +17,19 @@
 
 ## 项目结构
 models/
-├── sources.yml
+
+├── sources.yml 
+
 ├── staging/          # 轻量清洗视图
+
 ├── marts/
+
 │   ├── dim/          # 维度表
+
 │   ├── fact/         # 事实表
+
 │   └── analytics/    # 业务分析层
+
 └── schema.yml        # 测试定义
 text## 如何运行
 1. dbt run --select staging.*
