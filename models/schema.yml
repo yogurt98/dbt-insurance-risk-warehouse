@@ -1,5 +1,145 @@
 version: 2
 
+sources:
+  - name: raw
+    database: INSURANCE_DB
+    schema: RAW
+    tables:
+      - name: customers
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 1
+                  max_value: 20000
+
+          - name: date_of_birth
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_in_range:
+                  min_value: '1940-01-01'
+                  max_value: '2008-12-31'   # 年龄在18~86岁之间
+
+          - name: province
+            tests:
+              - accepted_values:
+                  values: ['ON', 'QC', 'BC', 'AB', 'MB', 'SK', 'NS', 'NB', 'NL', 'PE', 'YT', 'NT', 'NU']
+
+      - name: policies
+        columns:
+          - name: policy_id
+            tests:
+              - not_null
+              - unique
+
+          - name: customer_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'customers')
+                  field: customer_id
+
+          - name: premium_amount
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 10
+                  max_value: 2000
+
+          - name: status
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['Active', 'Lapsed', 'Cancelled']
+
+          - name: start_date
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_in_range:
+                  min_value: '2020-01-01'
+                  max_value: current_date()
+
+      - name: claims
+        columns:
+          - name: claim_id
+            tests:
+              - not_null
+              - unique
+
+          - name: policy_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'policies')
+                  field: policy_id
+
+          - name: claim_amount
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
+                  max_value: 1000000
+
+          - name: claim_date
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_in_range:
+                  min_value: '2022-01-01'
+                  max_value: current_date()
+
+      - name: risk_factors
+        columns:
+          - name: risk_factor_id
+            tests:
+              - not_null
+              - unique
+
+          - name: customer_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'customers')
+                  field: customer_id
+
+          - name: risk_score
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
+                  max_value: 100
+
+          - name: bmi
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 15.0
+                  max_value: 45.0
+
+          - name: smoking_status
+            tests:
+              - accepted_values:
+                  values: ['Y', 'N']
+
+models:
+  - name: stg_policies
+    tests:
+      # 重要业务规则：保单开始日期必须早于或等于结束日期（如果有结束日期）
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 30000
+          max_value: 50000
+
+  - name: stg_claims
+    tests:
+      # 理赔日期不应早于保单开始日期（通过 fact 层间接验证，这里先做简单检查）
+      - dbt_utils.relationships_where:
+          to: ref('stg_policies')
+          field: policy_id
+          from_condition: "claim_date >= start_date"
+
+version: 2
+
 models:
   # ==================== 1. Dimension Tables Tests ====================
   - name: dim_customer
