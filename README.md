@@ -59,11 +59,15 @@ The `analytics` layer provides immediate value for risk assessment and product p
 ## 📊 Data Lineage & Snowflake Implementation
 
 <image-card alt="Lineage - Fact Claims" src="screenshots/img.png" ></image-card>
+![img.png](screenshots%2Fimg.png)
 <image-card alt="Lineage - Monthly Risk Score" src="screenshots/img_1.png" ></image-card>
-
+![img_1.png](screenshots%2Fimg_1.png)
 <image-card alt="Mart Schema Overview" src="screenshots/img_2.png" ></image-card>
+![img_2.png](screenshots%2Fimg_2.png)
 <image-card alt="Stage Schema Overview" src="screenshots/img_3.png" ></image-card>
+![img_3.png](screenshots%2Fimg_3.png)
 <image-card alt="Snowflake dim_policy" src="screenshots/img_4.png" ></image-card>
+![img_4.png](screenshots%2Fimg_4.png)
 
 ## 🚀 How to Run This Project Locally
 
