@@ -20,7 +20,6 @@ This project demonstrates a complete modern ELT pipeline in the **insurance doma
 - Central fact table: `fact_claims`
 - Snowflake schema on `dim_risk_factor`
 - 3 production-ready analytics marts for actuarial use cases
-- **Added comprehensive dbt tests (25+ total)** across staging and marts layers, including data range validation, referential integrity, and insurance-specific business rules (e.g., policy start date ≤ claim date, reasonable age/BMI ranges).
 
 ### 🏗️ Data Architecture
 - **Fact Table:** `fact_claims` (Core transactional data)
@@ -43,7 +42,7 @@ models/
 │   ├── dim/              # Dimension tables
 │   ├── fact/             # Fact tables
 │   └── analytics/        # Business-facing analytical models
-└── schema.yml            # Model definitions and tests
+└── sources.yml            # Model definitions 
 ```
 
 ## 💡 Business Value & Analytics
