@@ -1,4 +1,6 @@
 # 🏛️ Insurance Risk Data Warehouse (dbt + Snowflake)
+
+
 <image-card alt="dbt" src="https://img.shields.io/badge/dbt-1.8+-FF694B" ></image-card>
 <image-card alt="Snowflake" src="https://img.shields.io/badge/Snowflake-Enterprise-29B6F6" ></image-card>
 <image-card alt="License" src="https://img.shields.io/badge/License-MIT-green" ></image-card>
