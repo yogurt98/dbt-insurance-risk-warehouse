@@ -31,12 +31,61 @@ models/
 │   └── analytics/    # 业务分析层
 
 └── schema.yml        # 测试定义
-text## 如何运行
-1. dbt run --select staging.*
-2. dbt run --select dim_* fact_claims
-3. dbt run --select analytics.*
-4. dbt test
-5. dbt docs generate && dbt docs serve
+
+## 🚀 How to Run This Project Locally
+
+### Prerequisites
+- Python 3.10+
+- Snowflake account (with a database `INSURANCE_DB`)
+- dbt Core installed (`pip install dbt-snowflake`)
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yogurt98/dbt-insurance-risk-warehouse.git
+cd dbt-insurance-risk-warehouse
+```
+### 2. Install dependencies
+```bash
+pip install dbt-snowflake
+dbt deps
+```
+### 3. Configure connection
+Create a profiles.yml file in the project root (or in ~/.dbt/profiles.yml):
+```bash
+insurance_risk_dwh:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: your_account_name   # e.g. xy12345.ca-central-1.aws
+      user: your_username
+      password: your_password      # or use key-pair auth (recommended)
+      role: ACCOUNTADMIN
+      database: INSURANCE_DB
+      warehouse: DBT_WH
+      schema: MARTS
+      threads: 4
+```
+### 4. Run the project
+```bash
+# Run all models
+dbt run
+
+# Run tests
+dbt test
+
+# Generate documentation (with lineage)
+dbt docs generate
+dbt docs serve
+```
+## Alternative: Run in dbt Cloud
+
+1. Create a new project in dbt Cloud
+2. Connect this GitHub repository
+3. Set up the Snowflake connection
+4. Run `dbt run` / `dbt build` in the IDE
+
+**Note**: This project uses synthetic insurance data (policies, claims, risk factors). All models are built with Kimball dimensional modeling (star + snowflake schema).
 
 ## 业务价值
 - Monthly_Risk_Score：监控产品风险趋势
@@ -44,8 +93,9 @@ text## 如何运行
 - Customer_LTV：粗估客户净贡献与终身价值
 
 ## Lineage 示例
-![img.png](img.png)
-![img_1.png](img_1.png)
+![img.png](screenshots/img.png)
+
+![img_1.png](screenshots/img_1.png)
 
 ## 联系
 Jingxu Lan | Waterloo, ON | Data Engineer Candidate
