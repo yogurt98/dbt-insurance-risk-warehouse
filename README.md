@@ -32,11 +32,13 @@ models/
 ## 💡 Business Value & Analytics
 The `analytics` layer provides immediate value for risk assessment and product performance evaluation:
 
-- 📈 Monthly Risk Score (Monthly_Risk_Score): Monitors product risk trends over time to assist in premium adjustments and risk mitigation.
+- **Monthly Risk Score**: Tracks average risk trends by product and month — supports dynamic pricing and underwriting decisions.
 
-- 📊 Claims by Product (Claims_By_Product): Calculates core actuarial metrics, including Loss Ratios and Claim Frequencies, across different insurance product lines.
 
-- 💎 Customer Lifetime Value (Customer_LTV): Provides a high-level estimation of net customer contribution and long-term profitability.
+- **Claims by Product**: Calculates **Loss Ratio**, claim frequency, and severity by product line (Auto / Home / Life / Health).
+
+
+- **Customer LTV**: Estimates net customer contribution and lifetime profitability, enabling better customer segmentation and retention strategies.
 
 
 ## 🚀 How to Run This Project Locally
@@ -95,13 +97,13 @@ dbt docs serve
 **Note**: This project uses synthetic insurance data (policies, claims, risk factors). All models are built with Kimball dimensional modeling (star + snowflake schema).
 
 
-## Lineage Example
-![img.png](screenshots/img.png)
-![img_1.png](screenshots/img_1.png)
+## 📊 Data Lineage & Snowflake Implementation
 
-## Snowflake Example
-![img_2.png](screenshots/img_2.png)
-![img_3.png](screenshots/img_3.png)
-![img_4.png](screenshots/img_4.png)
+<image-card alt="Lineage - Fact Claims" src="screenshots/img.png" ></image-card>
+<image-card alt="Lineage - Monthly Risk Score" src="screenshots/img_1.png" ></image-card>
+
+<image-card alt="Mart Schema Overview" src="screenshots/img_2.png" ></image-card>
+<image-card alt="Stage Schema Overview" src="screenshots/img_3.png" ></image-card>
+<image-card alt="Snowflake dim_policy" src="screenshots/img_4.png" ></image-card>
 ## 📬 Contact
 Jingxu Lan | Waterloo, ON | Data Engineer Candidate
