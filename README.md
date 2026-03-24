@@ -11,7 +11,46 @@
 Processes **100,000+** synthetic actuarial records and delivers actionable analytics for risk management, pricing, and customer profitability.
 
 ---
+## 🏗️ Project Architecture
 
+```mermaid
+flowchart TD
+%% Sources
+    SOURCES[(Synthetic Data\nPython Faker)] --> RAW[[RAW Schema]]
+
+%% Staging Layer
+    subgraph Bronze [Bronze: Staging]
+        RAW --> STG[stg_models\n<br/>Renaming, Casting,\nBasic Deduplication]
+    end
+
+%% Warehouse Layer
+    subgraph Silver [Silver: Core Warehouse]
+        STG --> DIM[Dimension Tables\n<br/>dim_customers\ndim_policies\ndim_risk_factors]
+        STG --> FACT[Fact Table\n<br/>**fact_claims**\nAggregated Claim Events]
+
+        DATE[dim_date\nStatic Reference] -.-> FACT
+    end
+
+%% Marts Layer
+    subgraph Gold [Gold: Analytics Marts]
+        DIM --> MARTS
+        FACT --> MARTS[Business Marts\n<br/>monthly_risk_score\nclaims_by_product\n**customer_ltv**]
+    end
+
+%% Relationships (Logical)
+    FACT --- DIM
+
+%% Styling
+    classDef bronze fill:#4A2C6D,stroke:#fff,color:#fff
+    classDef silver fill:#2E7D7E,stroke:#fff,color:#fff
+    classDef gold fill:#F9A825,stroke:#333,color:#333
+    classDef source fill:#f5f5f5,stroke:#333,color:#333
+
+    class RAW,STG bronze
+    class DIM,FACT,DATE silver
+    class MARTS gold
+    class SOURCES source
+```
 ## 📌 Project Overview
 
 This project demonstrates a complete modern ELT pipeline in the **insurance domain**:
@@ -44,6 +83,8 @@ models/
 │   └── analytics/        # Business-facing analytical models
 └── sources.yml            # Model definitions 
 ```
+
+
 
 ## 💡 Business Value & Analytics
 The `analytics` layer provides immediate value for risk assessment and product performance evaluation:
