@@ -1,36 +1,43 @@
-# Insurance Risk Data Warehouse (dbt + Snowflake)
+# 🏛️ Insurance Risk Data Warehouse (dbt + Snowflake)
 
-## 项目概述
-使用 dbt + Snowflake 构建的保险风险数据仓库，采用 Kimball 维度建模（星型 + 雪花型），包含：
-- 合成精算数据（10万条）：客户、保单、理赔、风险因子
-- 层次：raw → staging → marts (dim + fact + analytics)
-- 核心事实表：fact_claims
-- 维度：dim_customer, dim_policy, dim_date, dim_risk_factor (雪花型)
-- 分析层：Monthly Risk Score, Claims by Product, Customer LTV
+## 📌 Project Overview
+This project is an end-to-end **Insurance Risk Data Warehouse** built with **dbt** and **Snowflake**. Designed using **Kimball's dimensional modeling** methodology (incorporating both Star and Snowflake schemas), it transforms raw data into actionable business intelligence.
 
-## 技术栈
-- Snowflake (Enterprise Trial via Partner Connect)
-- dbt Cloud (Developer 免费计划)
-- 维度建模：Kimball 方法
-- 测试：not_null, unique, relationships, accepted_values
-- 文档：dbt docs + lineage 图
+The pipeline processes over 100,000 records of synthetic actuarial data—encompassing customers, policies, claims, and risk factors—and flows through a structured three-tier architecture: `raw` ➔ `staging` ➔ `marts` (dim + fact + analytics).
 
-## 项目结构
+### 🏗️ Data Architecture
+- **Fact Table:** `fact_claims` (Core transactional data)
+- **Dimension Tables:** `dim_customer`, `dim_policy`, `dim_date`, `dim_risk_factor` (Snowflake schema integration)
+- **Analytics Layer:** Pre-aggregated views tailored for actuarial and business reporting.
+
+## 🛠️ Tech Stack
+- **Data Warehouse:** Snowflake (Enterprise Trial via Partner Connect)
+- **Transformation & Modeling:** dbt Core & dbt Cloud (Developer Free Plan)
+- **Data Modeling:** Kimball Methodology
+- **Data Quality & Testing:** dbt native tests (`not_null`, `unique`, `relationships`, `accepted_values`)
+- **Documentation:** dbt docs + auto-generated lineage graphs
+
+## 📂 Project Structure
+```text
 models/
-
-├── sources.yml 
-
-├── staging/          # 轻量清洗视图
-
+├── sources.yml           # Source definitions and freshness rules
+├── staging/              # Lightweight cleansing and standardization views
 ├── marts/
+│   ├── dim/              # Dimension tables
+│   ├── fact/             # Fact tables
+│   └── analytics/        # Business-facing analytical models
+└── schema.yml            # Model definitions and tests
+```
 
-│   ├── dim/          # 维度表
+## 💡 Business Value & Analytics
+The `analytics` layer provides immediate value for risk assessment and product performance evaluation:
 
-│   ├── fact/         # 事实表
+- 📈 Monthly Risk Score (Monthly_Risk_Score): Monitors product risk trends over time to assist in premium adjustments and risk mitigation.
 
-│   └── analytics/    # 业务分析层
+- 📊 Claims by Product (Claims_By_Product): Calculates core actuarial metrics, including Loss Ratios and Claim Frequencies, across different insurance product lines.
 
-└── schema.yml        # 测试定义
+- 💎 Customer Lifetime Value (Customer_LTV): Provides a high-level estimation of net customer contribution and long-term profitability.
+
 
 ## 🚀 How to Run This Project Locally
 
@@ -87,15 +94,14 @@ dbt docs serve
 
 **Note**: This project uses synthetic insurance data (policies, claims, risk factors). All models are built with Kimball dimensional modeling (star + snowflake schema).
 
-## 业务价值
-- Monthly_Risk_Score：监控产品风险趋势
-- Claims_By_Product：计算损失率、理赔频率
-- Customer_LTV：粗估客户净贡献与终身价值
 
-## Lineage 示例
+## Lineage Example
 ![img.png](screenshots/img.png)
-
 ![img_1.png](screenshots/img_1.png)
 
-## 联系
+## Snowflake Example
+![img_2.png](screenshots/img_2.png)
+![img_3.png](screenshots/img_3.png)
+![img_4.png](screenshots/img_4.png)
+## 📬 Contact
 Jingxu Lan | Waterloo, ON | Data Engineer Candidate
