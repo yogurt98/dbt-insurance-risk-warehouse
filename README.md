@@ -69,19 +69,24 @@ This project demonstrates a complete modern ELT pipeline in the **insurance doma
 - **Data Warehouse:** Snowflake (Enterprise Trial via Partner Connect)
 - **Transformation & Modeling:** dbt Core & dbt Cloud (Developer Free Plan)
 - **Data Modeling:** Kimball Methodology
-- **Data Quality & Testing:** dbt native tests (`not_null`, `unique`, `relationships`, `accepted_values`)
-- **Documentation:** dbt docs + auto-generated lineage graphs
+- **Data Generation:** Python Faker (100k+ records)
+- **Documentation:** dbt docs + Mermaid architecture diagram
 
 ## 📂 Project Structure
 ```text
-models/
-├── sources.yml           # Source definitions and freshness rules
-├── staging/              # Lightweight cleansing and standardization views
-├── marts/
-│   ├── dim/              # Dimension tables
-│   ├── fact/             # Fact tables
-│   └── analytics/        # Business-facing analytical models
-└── sources.yml            # Model definitions 
+insurance_risk_dwh/
+├── dbt_project.yml
+├── sources.yml
+├── packages.yml
+├── models/
+│   ├── staging/          # stg_*.sql - cleansing & standardization
+│   ├── marts/
+│   │   ├── dim/          # dim_customer, dim_policy, dim_date, dim_risk_factor
+│   │   ├── fact/         # fact_claims
+│   │   └── analytics/    # monthly_risk_score, claims_by_product, customer_ltv
+│   └── sources.yml        
+├── snapshots/            # (Optional SCD2)
+└── macros/               # Custom macros****
 ```
 
 
@@ -144,13 +149,10 @@ insurance_risk_dwh:
       schema: MARTS
       threads: 4
 ```
-### 4. Build & Test
+### 4. Run
 ```bash
 # Run all models
 dbt run
-
-# Run tests
-dbt test
 
 # Generate documentation (with lineage)
 dbt docs generate
