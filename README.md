@@ -68,7 +68,7 @@ This project demonstrates a complete modern ELT pipeline in the **insurance doma
 ## 🛠️ Tech Stack
 - **Data Warehouse:** Snowflake (Enterprise Trial via Partner Connect)
 - **Transformation & Modeling:** dbt Core & dbt Cloud (Developer Free Plan)
-- **Data Modeling:** Kimball Methodology
+- **Data Quality & Testing:** dbt native `data_tests` (Primary Keys, Referential Integrity, Accepted Values)
 - **Data Generation:** Python Faker (100k+ records)
 - **Documentation:** dbt docs + Mermaid architecture diagram
 
@@ -89,7 +89,12 @@ insurance_risk_dwh/
 └── macros/               # Custom macros****
 ```
 
-
+## 🛠️ Tech Stack
+- **Data Warehouse:** Snowflake (Enterprise Trial via Partner Connect)
+- **Transformation & Modeling:** dbt Core & dbt Cloud (Developer Free Plan)
+- **Data Quality & Testing:** dbt native `data_tests` (Primary Keys, Referential Integrity, Accepted Values)
+- **Data Generation:** Python Faker (100k+ records)
+- **Documentation:** dbt docs + Mermaid architecture diagram
 
 ## 💡 Business Value & Analytics
 The `analytics` layer provides immediate value for risk assessment and product performance evaluation:
@@ -149,12 +154,15 @@ insurance_risk_dwh:
       schema: MARTS
       threads: 4
 ```
-### 4. Run
+### 4. Run Pipeline & Tests
 ```bash
-# Run all models
+# Run all models to build the warehouse
 dbt run
 
-# Generate documentation (with lineage)
+# Run data quality tests to ensure data integrity
+dbt test
+
+# Generate and serve documentation (with lineage)
 dbt docs generate
 dbt docs serve
 ```
