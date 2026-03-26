@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "清洗后的客户基础信息表"
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+      - name: date_of_birth
+        data_tests:
+          - not_null
+      - name: join_date
+        data_tests:
+          - not_null
+
+  - name: stg_policies
+    description: "清洗后的保单表"
+    columns:
+      - name: policy_id
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_id
+        data_tests:
+          - not_null
+          # 使用 test_name 显式格式定义 relationships
+          - test_name: relationships
+            arguments:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: start_date
+        data_tests:
+          - not_null
+      - name: premium_amount
+        data_tests:
+          - not_null
+      - name: product_type
+        data_tests:
+          - not_null
+          - test_name: accepted_values
+            arguments:
+              values: ['Auto', 'Home', 'Life', 'Health']
+
+  - name: stg_claims
+    description: "清洗后的理赔表"
+    columns:
+      - name: claim_id
+        data_tests:
+          - not_null
+          - unique
+      - name: policy_id
+        data_tests:
+          - not_null
+          - test_name: relationships
+            arguments:
+              to: ref('stg_policies')
+              field: policy_id
+      - name: claim_date
+        data_tests:
+          - not_null
+      - name: claim_amount
+        data_tests:
+          - not_null
+
+  - name: stg_risk_factors
+    description: "清洗后的风险因子表"
+    columns:
+      - name: risk_factor_id
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_id
+        data_tests:
+          - not_null
+          - test_name: relationships
+            arguments:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: risk_score
+        data_tests:
+          - not_null
+      - name: last_assessment_date
+        data_tests:
+          - not_null

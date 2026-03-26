@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "客户维度表"
+    columns:
+      - name: customer_key
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_id
+        data_tests:
+          - not_null
+      - name: full_name
+        data_tests:
+          - not_null
+      - name: age
+        data_tests:
+          - not_null
+
+  - name: dim_policy
+    description: "保单维度表"
+    columns:
+      - name: policy_key
+        data_tests:
+          - not_null
+          - unique
+      - name: policy_id
+        data_tests:
+          - not_null
+      - name: product_type
+        data_tests:
+          - test_name: accepted_values  # <-- 明确声明测试名称
+            arguments:                  # <-- 明确包裹参数
+              values: ['Auto', 'Home', 'Life', 'Health']
+
+  - name: dim_date
+    description: "日期维度表"
+    columns:
+      - name: date_key
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_risk_factor
+    description: "风险因子维度表（雪花型）"
+    columns:
+      - name: risk_factor_key
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_key
+        data_tests:
+          - not_null
+      - name: risk_score
+        data_tests:
+          - not_null
